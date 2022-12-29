@@ -1,10 +1,9 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.itextpdf.html2pdf.HtmlConverter;
+
+import java.awt.*;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.Date;
-
 public class CV {
 
 
@@ -145,21 +144,64 @@ public class CV {
         }
         template = template.replace("${certificates}", certificatesList);
 
+        File htmlFile = null;
         try {
             //This is the cv file in html format, we can send it to database.
-            File CVfile = new File("cv.html");
-            BufferedWriter writer = new BufferedWriter(new FileWriter(CVfile));
+            htmlFile = new File("cv.html");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(htmlFile));
             writer.write(template);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        try {
+
+            //We need to convert auto-generated html file to pdf because pdf is more common
+            //so its more possible to open a pdf file without any other software requirement.
+
+            FileInputStream inputStream = new FileInputStream("cv.html");
+            FileOutputStream outputStream = new FileOutputStream("CVDocument.pdf");
+
+            //Convert the HTML file to a PDF file
+            //This line can give error. (solution: adding external library)
+            HtmlConverter.convertToPdf(inputStream, outputStream);
+
+            inputStream.close();
+            outputStream.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        htmlFile.delete();
+
+        File filePDF = new File("CVDocument.pdf");
+        //TODO send pdf file to database.
+
+
+        //Delete pdf file from folder because it is in db.
+        filePDF.delete();
+
         //Almost completed, I'll check back when the other parts are progressing.
+
     }
     public static void searchCV(){}
     public static void deleteCV(){}
     public static void updateCV(){}
     public static void printCV(File file){
+
+        //For print, I thought that the file should be opened with the default
+        // program on the computer and print processing could be done through
+        // the opened program.
+
+        try {
+            Desktop.getDesktop().open(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Almost completed, I'll check back when the other parts are progressing.
+
     }
 }

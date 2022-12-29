@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="bcpkix-jdk15on-1.70">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/jar_files/bcpkix-jdk15on-1.70.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/bcprov-jdk15on-1.70.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/bcutil-jdk15on-1.70.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/commons-7.2.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/forms-7.2.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/html2pdf-4.0.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/io-7.2.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/kernel-7.2.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/layout-7.2.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/slf4j-api-1.7.36.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/styled-xml-parser-7.2.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jar_files/svg-7.2.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
