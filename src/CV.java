@@ -1,11 +1,11 @@
-import com.itextpdf.html2pdf.HtmlConverter;
+//import com.itextpdf.html2pdf.HtmlConverter;
 
 import java.awt.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.Date;
 public class CV {
-
+    String pdfPath;
 
     public static void addCV(String name, String surname, String Education, String[] Languages, String[] Experiences, String[] Projects, String Department, String Address, int ID, String[] Competencies, String[] Certificates, Long PhoneNumber, Date LocalDate, String About){
 
@@ -114,35 +114,35 @@ public class CV {
         template = template.replace("${department}", department);
         template = template.replace("${about}", about);
 
-        String languagesList = "";
+        StringBuilder languagesList = new StringBuilder();
         for (String language : languages) {
-            languagesList += "<li>" + language + "</li>";
+            languagesList.append("<li>").append(language).append("</li>");
         }
-        template = template.replace("${languages}", languagesList);
+        template = template.replace("${languages}", languagesList.toString());
 
-        String experiencesList = "";
+        StringBuilder experiencesList = new StringBuilder();
         for (String experience : experiences) {
-            experiencesList += "<li>" + experience + "</li>";
+            experiencesList.append("<li>").append(experience).append("</li>");
         }
-        template = template.replace("${experiences}", experiencesList);
+        template = template.replace("${experiences}", experiencesList.toString());
 
-        String projectsList = "";
+        StringBuilder projectsList = new StringBuilder();
         for (String project : projects) {
-            projectsList += "<li>" + project + "</li>";
+            projectsList.append("<li>").append(project).append("</li>");
         }
-        template = template.replace("${projects}", projectsList);
+        template = template.replace("${projects}", projectsList.toString());
 
-        String competenciesList = "";
+        StringBuilder competenciesList = new StringBuilder();
         for (String competency : competencies) {
-            competenciesList += "<li>" + competency + "</li>";
+            competenciesList.append("<li>").append(competency).append("</li>");
         }
-        template = template.replace("${competencies}", competenciesList);
+        template = template.replace("${competencies}", competenciesList.toString());
 
-        String certificatesList = "";
+        StringBuilder certificatesList = new StringBuilder();
         for (String certificate : certificates) {
-            certificatesList += "<li>" + certificate + "</li>";
+            certificatesList.append("<li>").append(certificate).append("</li>");
         }
-        template = template.replace("${certificates}", certificatesList);
+        template = template.replace("${certificates}", certificatesList.toString());
 
         File htmlFile = null;
         try {
@@ -165,7 +165,7 @@ public class CV {
 
             //Convert the HTML file to a PDF file
             //This line can give error. (solution: adding external library)
-            HtmlConverter.convertToPdf(inputStream, outputStream);
+            //HtmlConverter.convertToPdf(inputStream, outputStream);
 
             inputStream.close();
             outputStream.close();
