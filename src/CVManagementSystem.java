@@ -1,8 +1,7 @@
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
 
 public class CVManagementSystem {
     private JFrame frame;
@@ -34,28 +33,64 @@ public class CVManagementSystem {
         new CVManagementSystem();
         CV cv = new CV();
         CV cv2 = new CV();
+        DBConnection();
 
 
+    }
 
+    public static void DBConnection(){
         try {
             // Load the SQLite JDBC driver
             Class.forName("org.sqlite.JDBC");
 
+
+            // Check if the database file exists
+            File dbFile = new File("database");
+            if(!dbFile.exists()){
+                //Create the database file
+                dbFile.createNewFile();
+            }
+
             // Connect to the database
-            String url = "jdbc:sqlite:/C:\\Program Files\\DB Browser for SQLite\\Tag.db";
+            String url = "jdbc:sqlite:Tag.db";
             Connection conn = DriverManager.getConnection(url);
 
-            // Do something with the connection...
+            // Create the Tag & CV tables
+            String sql =  "CREATE TABLE \"Tag\" (\n" +
+                    "\t\"Name\"\tTEXT NOT NULL,\n" +
+                    "\t\"Surname\"\tTEXT NOT NULL,\n" +
+                    "\t\"Education\"\tTEXT,\n" +
+                    "\t\"Languages\"\tTEXT,\n" +
+                    "\t\"Experiences\"\tTEXT,\n" +
+                    "\t\"Projects\"\tTEXT,\n" +
+                    "\t\"Department\"\tTEXT,\n" +
+                    "\t\"Address\"\tTEXT UNIQUE,\n" +
+                    "\t\"ID\"\tINTEGER,\n" +
+                    "\t\"Competencies\"\tTEXT,\n" +
+                    "\t\"Certificates\"\tTEXT,\n" +
+                    "\t\"PhoneNumber\"\tREAL UNIQUE,\n" +
+                    "\t\"Date\"\tTEXT,\n" +
+                    "\t\"About\"\tTEXT,\n" +
+                    "\tPRIMARY KEY(\"ID\" AUTOINCREMENT)\n" +
+                    "); " +
+                    "CREATE TABLE \"CV\" (\n" +
+                    "\t\"CV\"\tBLOB\n" +
+                    ")";
+
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+
             System.out.println("connected");
 
-            //PreparedStatement stmt = conn.prepareStatement(sql);
-            //stmt.executeUpdate();
             conn.close();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
     }
+
+
     private void addPanel(){
         panel = new JPanel();
         searchButton();
