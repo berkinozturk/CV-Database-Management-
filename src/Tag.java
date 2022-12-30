@@ -16,7 +16,9 @@ public class Tag {
     private LocalDate date;
     private String about;
 
-    public Tag() {
+    public Tag(String name, String surname, String education, String[] languages, String[] experiences,
+               String[] projects, String department, String address, int ID, String[] competencies,
+               String[] certificates, long phoneNumber, LocalDate date, String about) {
         this.name = name;
         this.surname = surname;
         this.education = education;

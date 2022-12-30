@@ -1,12 +1,11 @@
 //import com.itextpdf.html2pdf.HtmlConverter;
-
 import java.awt.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.*;
 public class CV {
-    String pdfPath;
+    File pdf; // file will be on the database
 
     public static void addCV(String name, String surname, String Education, String[] Languages, String[] Experiences, String[] Projects, String Department, String Address, int ID, String[] Competencies, String[] Certificates, Long PhoneNumber, Date LocalDate, String About){
 
@@ -191,13 +190,16 @@ public class CV {
     }
     public static void searchCV(){}
     public static void deleteCV(){}
-    public static void updateCV(String name, String surname, String education, String[] languages, String[] experiences, String[] projects, String department, String address, int ID, String[] competencies, String[] certificates, Long phoneNumber, Date localDate, String about){
+
+    /*public static void updateCV(String name, String surname, String education, String[] languages, String[] experiences, String[] projects,
+                                String department, String address, int ID, String[] competencies, String[] certificates,
+                                Long phoneNumber, Date localDate, String about){
 
         /*Connection conn = null;
         Statement stmt = conn.createStatement();
 
         String sql = "UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition";
-        stmt.executeUpdate(sql);*/
+        stmt.executeUpdate(sql); '//'
 
         Scanner scan = new Scanner(System.in);
         //name
@@ -276,13 +278,14 @@ public class CV {
         //date
         /*Tag dt = new Tag();
         Date date = new Date();  // creates a new Date object with the current date and time
-        dt.setDate(date);???*/
+        dt.setDate(date);???
         //about
         about = scan.next();
         Tag abt = new Tag();
         abt.setAbout(about);
 
-    }
+    }*/
+
     public static void printCV(File file){
 
         //For print, I thought that the file should be opened with the default

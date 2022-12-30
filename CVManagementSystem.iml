@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sqlite-jdbc-3.40.0.0" level="project" />
     <orderEntry type="library" name="bcpkix-jdk15on-1.70" level="project" />
+    <orderEntry type="library" name="pdfbox-2.0" level="project" />
   </component>
 </module>

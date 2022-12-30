@@ -1,4 +1,10 @@
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -35,7 +41,6 @@ public class CVManagementSystem {
         CV cv2 = new CV();
         DBConnection();
 
-
     }
 
     public static void DBConnection(){
@@ -43,46 +48,48 @@ public class CVManagementSystem {
             // Load the SQLite JDBC driver
             Class.forName("org.sqlite.JDBC");
 
-
             // Check if the database file exists
             File dbFile = new File("database");
-            if(!dbFile.exists()){
-                //Create the database file
+            //Create the database file
+            if(!dbFile.exists()) {
                 dbFile.createNewFile();
+
+                // Connect to the database
+                String url = "jdbc:sqlite:Tag.db";
+                Connection conn = DriverManager.getConnection(url);
+
+                // Create the Tag & CV tables
+                String sql =  "CREATE TABLE \"Tag\" (\n" +
+                        "\t\"Name\"\tTEXT NOT NULL,\n" +
+                        "\t\"Surname\"\tTEXT NOT NULL,\n" +
+                        "\t\"Education\"\tTEXT,\n" +
+                        "\t\"Languages\"\tTEXT,\n" +
+                        "\t\"Experiences\"\tTEXT,\n" +
+                        "\t\"Projects\"\tTEXT,\n" +
+                        "\t\"Department\"\tTEXT,\n" +
+                        "\t\"Address\"\tTEXT UNIQUE,\n" +
+                        "\t\"ID\"\tINTEGER,\n" +
+                        "\t\"Competencies\"\tTEXT,\n" +
+                        "\t\"Certificates\"\tTEXT,\n" +
+                        "\t\"PhoneNumber\"\tREAL UNIQUE,\n" +
+                        "\t\"Date\"\tTEXT,\n" +
+                        "\t\"About\"\tTEXT,\n" +
+                        "\tPRIMARY KEY(\"ID\" AUTOINCREMENT)\n" +
+                        "); " +
+                        "CREATE TABLE \"CV\" (\n" +
+                        "\t\"CV\"\tBLOB\n" +
+                        ")";
+
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+
+                System.out.println("connected");
+
+                conn.close();
+            }else{
+                // That means we are already have file named database and tag.db file exits
+                // further implementation must be here
             }
-
-            // Connect to the database
-            String url = "jdbc:sqlite:Tag.db";
-            Connection conn = DriverManager.getConnection(url);
-
-            // Create the Tag & CV tables
-            String sql =  "CREATE TABLE \"Tag\" (\n" +
-                    "\t\"Name\"\tTEXT NOT NULL,\n" +
-                    "\t\"Surname\"\tTEXT NOT NULL,\n" +
-                    "\t\"Education\"\tTEXT,\n" +
-                    "\t\"Languages\"\tTEXT,\n" +
-                    "\t\"Experiences\"\tTEXT,\n" +
-                    "\t\"Projects\"\tTEXT,\n" +
-                    "\t\"Department\"\tTEXT,\n" +
-                    "\t\"Address\"\tTEXT UNIQUE,\n" +
-                    "\t\"ID\"\tINTEGER,\n" +
-                    "\t\"Competencies\"\tTEXT,\n" +
-                    "\t\"Certificates\"\tTEXT,\n" +
-                    "\t\"PhoneNumber\"\tREAL UNIQUE,\n" +
-                    "\t\"Date\"\tTEXT,\n" +
-                    "\t\"About\"\tTEXT,\n" +
-                    "\tPRIMARY KEY(\"ID\" AUTOINCREMENT)\n" +
-                    "); " +
-                    "CREATE TABLE \"CV\" (\n" +
-                    "\t\"CV\"\tBLOB\n" +
-                    ")";
-
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
-
-            System.out.println("connected");
-
-            conn.close();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -107,9 +114,11 @@ public class CVManagementSystem {
         toolsMenu = new JMenu("Tools");
         importItem = new JMenuItem("Import CV");
         printItem = new JMenuItem("Print CV");
+        printItem.setEnabled(false);
         generateItem = new JMenuItem("Generate CV");
         helpMenu = new JMenu("Help");
         helpMenuItem = new JMenuItem("Help?");
+        defineActionListeners();
 
         toolsMenu.add(importItem);
         toolsMenu.add(printItem);
@@ -121,12 +130,59 @@ public class CVManagementSystem {
     }
     private void searchButton(){
 
-        Icon searchIcon = new ImageIcon("res/search-icon.png");
+        Icon searchIcon = new ImageIcon("image/search-icon.png");
         searchButton = new JButton(searchIcon);
         searchButton.setVerticalTextPosition(AbstractButton.CENTER);
         searchButton.setHorizontalTextPosition(AbstractButton.RIGHT);
     }
+    private void editingTag(){
+        JTextField  textField = new JTextField();
 
+    }
+    private void visualizeTags(){
+        JFrame tagFrame = new JFrame();
+        JPanel tagPanel = new JPanel();
+
+    }
+    private void defineActionListeners(){
+        JFileChooser fileChooser = new JFileChooser();
+        // currentCV DO NOT be implemented in this manner this here for testing
+        final CV[] currentCV = {new CV()};
+        importItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = fileChooser.showOpenDialog(frame);
+
+                // If the user selected a file, copy it to the system
+                if (result == JFileChooser.APPROVE_OPTION){
+
+                    // file is set to CV object
+                    currentCV[0].pdf = fileChooser.getSelectedFile();
+                    printItem.setEnabled(true);
+                }
+            }
+        });
+
+        printItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File file = fileChooser.getSelectedFile();
+                // Load the PDF file using PDFBox
+                try (PDDocument document = PDDocument.load(file)) {
+                    // Create a PDFPageable object to print the document
+                    PDFPageable pageable = new PDFPageable(document);
+                    // Print the document
+                    PrinterJob job = PrinterJob.getPrinterJob();
+                    job.setPageable(pageable);
+                    if (job.printDialog()) {
+                        job.print();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
 
 }
 
