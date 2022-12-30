@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.*;
 public class CV {
     String pdfPath;
 
@@ -190,7 +191,55 @@ public class CV {
     }
     public static void searchCV(){}
     public static void deleteCV(){}
-    public static void updateCV(){}
+    public static void updateCV(String name, String surname, String education, String[] languages, String[] experiences, String[] projects, String department, String address, int ID, String[] competencies, String[] certificates, Long phoneNumber, Date localDate, String about){
+
+        /*Connection conn = null;
+        Statement stmt = conn.createStatement();
+
+        String sql = "UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition";
+        stmt.executeUpdate(sql);*/
+
+        Scanner scan = new Scanner(System.in);
+        //name
+        name = scan.next();
+        Tag nam = new Tag();
+        nam.setName(name);
+        //surname
+        surname = scan.next();
+        Tag surName = new Tag();
+        surName.setSurname(surname);
+        //education
+        education = scan.next();
+        Tag edu = new Tag();
+        edu.setEducation(education);
+        //languages
+        //experiences
+        //projects
+        //department
+        department = scan.next();
+        Tag dep = new Tag();
+        dep.setDepartment(department);
+        //address
+        address = scan.next();
+        Tag addr = new Tag();
+        addr.setAddress(address);
+        //ID
+        ID = scan.nextInt();
+        Tag id = new Tag();
+        id.setID(ID);
+        //competencies
+        //certificates
+        //phoneNumber
+        phoneNumber = scan.nextLong();
+        Tag ph = new Tag();
+        ph.setPhoneNumber(phoneNumber);
+        //date
+        //about
+        about = scan.next();
+        Tag abt = new Tag();
+        abt.setAbout(about);
+
+    }
     public static void printCV(File file){
 
         //For print, I thought that the file should be opened with the default
