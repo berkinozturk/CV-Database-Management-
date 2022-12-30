@@ -213,8 +213,32 @@ public class CV {
         Tag edu = new Tag();
         edu.setEducation(education);
         //languages
+        String a = scan.nextLine();
+        languages = a.split(" ");  // split the input string into an array of strings
+        int[] newLan = new int[languages.length];  // create a new array with the same length as the input
+        for (int i = 0; i < languages.length; i++) {
+            newLan[i] = Integer.parseInt(languages[i]);  // parse each element of the input array and add it to the new array
+        }
+        Tag lan = new Tag();
+        lan.setLanguages(languages);// update the myArray field with the new array
         //experiences
+        String b = scan.nextLine();
+        experiences = b.split(" ");
+        int[] newEXp = new int[experiences.length];
+        for (int i = 0; i < experiences.length; i++) {
+            newEXp[i] = Integer.parseInt(experiences[i]);
+        }
+        Tag exp = new Tag();
+        exp.setExperiences(experiences);
         //projects
+        String c = scan.nextLine();
+        projects = c.split(" ");
+        int[] newPro = new int[projects.length];
+        for (int i = 0; i < projects.length; i++) {
+            newPro[i] = Integer.parseInt(projects[i]);
+        }
+        Tag proj = new Tag();
+        proj.setProjects(projects);
         //department
         department = scan.next();
         Tag dep = new Tag();
@@ -228,12 +252,31 @@ public class CV {
         Tag id = new Tag();
         id.setID(ID);
         //competencies
+        String d = scan.nextLine();
+        competencies = d.split(" ");
+        int[] newCom = new int[competencies.length];
+        for (int i = 0; i < competencies.length; i++) {
+            newCom[i] = Integer.parseInt(competencies[i]);
+        }
+        Tag comp = new Tag();
+        comp.setCompetencies(competencies);
         //certificates
+        String e = scan.nextLine();
+        certificates = e.split(" ");
+        int[] newCer = new int[certificates.length];
+        for (int i = 0; i < certificates.length; i++) {
+            newCer[i] = Integer.parseInt(certificates[i]);
+        }
+        Tag cert = new Tag();
+        cert.setCertificates(certificates);
         //phoneNumber
         phoneNumber = scan.nextLong();
         Tag ph = new Tag();
         ph.setPhoneNumber(phoneNumber);
         //date
+        /*Tag dt = new Tag();
+        Date date = new Date();  // creates a new Date object with the current date and time
+        dt.setDate(date);???*/
         //about
         about = scan.next();
         Tag abt = new Tag();
