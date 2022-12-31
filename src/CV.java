@@ -5,15 +5,16 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.*;
 public class CV {
-    File pdf; // file will be on the database
-
-    public static void addCV(String name, String surname, String Education, String[] Languages, String[] Experiences, String[] Projects, String Department, String Address, int ID, String[] Competencies, String[] Certificates, Long PhoneNumber, Date LocalDate, String About){
 
 
-
+    public static void addCV(File file, String name, String surname, String Education, String[] Languages, String[] Experiences,
+                             String[] Projects, String Department, String Address, int ID, String[] Competencies,
+                             String[] Certificates, Long PhoneNumber, Date LocalDate, String About){
     }
     public static void openCV(){}
-    public static void generateCV(String name, String surname, String Education, String[] Languages, String[] Experiences, String[] Projects, String Department, String Address, String[] Competencies, String[] Certificates, Long PhoneNumber, LocalDate LocalDate, String About){
+    public static void generateCV(String name, String surname, String Education, String[] Languages, String[] Experiences,
+                                  String[] Projects, String Department, String Address, String[] Competencies,
+                                  String[] Certificates, Long PhoneNumber, LocalDate LocalDate, String About){
 
         //These prevent getting an error when no value is entered.
         String Name = "not defined";
@@ -27,7 +28,9 @@ public class CV {
         String[] competencies = new String[]{"not defined"};
         String[] certificates = new String[]{"not defined"};
         long phoneNumber = 0;
-        //LocalDate date = null; What is it and why we need this?
+        //TODO: This is here because of sorting algorithms maybe it can be as follow ==> CV has an Date attribute when
+        // we import CV into System I will also add its current imported date and you can get it from it ??? -YİĞİT
+        //LocalDate date = null;
         String about = "not defined";
 
         //Get values if they defined.
@@ -194,7 +197,13 @@ public class CV {
     /*public static void updateCV(String name, String surname, String education, String[] languages, String[] experiences, String[] projects,
                                 String department, String address, int ID, String[] competencies, String[] certificates,
                                 Long phoneNumber, Date localDate, String about){
-
+        //TODO burda yeni tag objeleri oluşturmuşsun ki sanırım yanlış anlaşılmayı anladım.
+            adı üstünde tag eklemek demek herhangi bir türde bir şey ekleyebilirsin demek fakat bizim dizayn da tag
+            isimden başlayıp numarasına kadar olan bilgiyi tek bir objede (Tag) toplamak demek
+            kodunda değiştirmen gereken tek şey toplu tag objelerini silip onun yerine; databasemizden seçilen CV için
+            eski ve yeni tag objelerini gelen parametreyle karşılaştırmak ve fark varsa onu yeniye güncellemek olmalı
+        //
+     */
         /*Connection conn = null;
         Statement stmt = conn.createStatement();
 

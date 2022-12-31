@@ -1,6 +1,8 @@
+import java.io.File;
 import java.time.LocalDate;
 
 public class Tag {
+    private File pdf;
     private String name;
     private String surname;
     private String education;

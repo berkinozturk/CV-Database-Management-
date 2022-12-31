@@ -139,15 +139,14 @@ public class CVManagementSystem {
         JTextField  textField = new JTextField();
 
     }
-    private void visualizeTags(){
+    private void generationCVFrame(){
         JFrame tagFrame = new JFrame();
         JPanel tagPanel = new JPanel();
+
 
     }
     private void defineActionListeners(){
         JFileChooser fileChooser = new JFileChooser();
-        // currentCV DO NOT be implemented in this manner this here for testing
-        final CV[] currentCV = {new CV()};
         importItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -157,8 +156,10 @@ public class CVManagementSystem {
                 if (result == JFileChooser.APPROVE_OPTION){
 
                     // file is set to CV object
-                    currentCV[0].pdf = fileChooser.getSelectedFile();
+                    File file = fileChooser.getSelectedFile();
                     printItem.setEnabled(true);
+                    // her türlü otomatik çekmen lazım add kısmını doldurman gerekiyor
+                    // ya otomatik tagleri çek ya da çektikten sonra girmesine izin ver
                 }
             }
         });
@@ -171,7 +172,6 @@ public class CVManagementSystem {
                 try (PDDocument document = PDDocument.load(file)) {
                     // Create a PDFPageable object to print the document
                     PDFPageable pageable = new PDFPageable(document);
-                    // Print the document
                     PrinterJob job = PrinterJob.getPrinterJob();
                     job.setPageable(pageable);
                     if (job.printDialog()) {
@@ -182,6 +182,15 @@ public class CVManagementSystem {
                 }
             }
         });
+        generateItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // open up UI to enter information that generated into CV
+                generationCVFrame();
+
+            }
+        });
+
     }
 
 }
