@@ -1,13 +1,15 @@
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class CVManagementSystem {
     private JFrame frame;
@@ -40,10 +42,16 @@ public class CVManagementSystem {
         CV cv = new CV();
         CV cv2 = new CV();
         DBConnection();
+        try {
+            CV.generateCV(1,"a","a","a", new String[]{"a"}, new String[]{"a"}, new String[]{"a"},"a","a",
+                    new String[]{"a"}, new String[]{"a"}, 1L,"a");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
-    public static void DBConnection(){
+    public static void DBConnection() {
         try {
             // Load the SQLite JDBC driver
             Class.forName("org.sqlite.JDBC");
@@ -60,8 +68,8 @@ public class CVManagementSystem {
 
                 // Create the Tag & CV tables
                 String sql =  "CREATE TABLE \"Tag\" (\n" +
-                        "\t\"Name\"\tTEXT NOT NULL,\n" +
-                        "\t\"Surname\"\tTEXT NOT NULL,\n" +
+                        "\t\"Name\"\tTEXT ,\n" +
+                        "\t\"Surname\"\tTEXT ,\n" +
                         "\t\"Education\"\tTEXT,\n" +
                         "\t\"Languages\"\tTEXT,\n" +
                         "\t\"Experiences\"\tTEXT,\n" +
@@ -74,11 +82,9 @@ public class CVManagementSystem {
                         "\t\"PhoneNumber\"\tREAL UNIQUE,\n" +
                         "\t\"Date\"\tTEXT,\n" +
                         "\t\"About\"\tTEXT,\n" +
+                        "\t\"CVFile\"\tBLOB,\n" +
                         "\tPRIMARY KEY(\"ID\" AUTOINCREMENT)\n" +
-                        "); " +
-                        "CREATE TABLE \"CV\" (\n" +
-                        "\t\"CV\"\tBLOB\n" +
-                        ")";
+                        ");";
 
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sql);

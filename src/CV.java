@@ -1,9 +1,10 @@
-//import com.itextpdf.html2pdf.HtmlConverter;
-import java.awt.*;
+import com.itextpdf.html2pdf.HtmlConverter;
 import java.io.*;
-import java.time.LocalDate;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.*;
 import java.util.Date;
-import java.util.*;
 public class CV {
 
 
@@ -12,9 +13,9 @@ public class CV {
                              String[] Certificates, Long PhoneNumber, Date LocalDate, String About){
     }
     public static void openCV(){}
-    public static void generateCV(String name, String surname, String Education, String[] Languages, String[] Experiences,
+    public static void generateCV(int ID, String name, String surname, String Education, String[] Languages, String[] Experiences,
                                   String[] Projects, String Department, String Address, String[] Competencies,
-                                  String[] Certificates, Long PhoneNumber, LocalDate LocalDate, String About){
+                                  String[] Certificates, Long PhoneNumber, String About) throws SQLException {
 
         //These prevent getting an error when no value is entered.
         String Name = "not defined";
@@ -145,9 +146,9 @@ public class CV {
         }
         template = template.replace("${certificates}", certificatesList.toString());
 
+        //This is the cv file in html format.
         File htmlFile = null;
         try {
-            //This is the cv file in html format, we can send it to database.
             htmlFile = new File("cv.html");
             BufferedWriter writer = new BufferedWriter(new FileWriter(htmlFile));
             writer.write(template);
@@ -156,21 +157,16 @@ public class CV {
             e.printStackTrace();
         }
 
+        //We need to convert auto-generated html file to pdf because pdf is more common
+        //so its more possible to open a pdf file without any other software requirement.
         try {
-
-            //We need to convert auto-generated html file to pdf because pdf is more common
-            //so its more possible to open a pdf file without any other software requirement.
 
             FileInputStream inputStream = new FileInputStream("cv.html");
             FileOutputStream outputStream = new FileOutputStream("CVDocument.pdf");
 
             //Convert the HTML file to a PDF file
             //This line can give error. (solution: adding external library)
-
-            //HtmlConverter.convertToPdf(inputStream, outputStream);
-
-           // HtmlConverter.convertToPdf(inputStream, outputStream);
-
+            HtmlConverter.convertToPdf(inputStream, outputStream);
 
             inputStream.close();
             outputStream.close();
@@ -181,14 +177,49 @@ public class CV {
 
         htmlFile.delete();
 
-        File filePDF = new File("CVDocument.pdf");
-        //TODO send pdf file to database.
+        //-------------------------------------Send to Database---------------------------------------------
+
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:Tag.db")) {
+            // Load the PDF file into memory
+            Path filePath = Paths.get("CVDocument.pdf");
+            byte[] fileData = Files.readAllBytes(filePath);
+
+            // Insert the PDF file into the database
+            String sql = "INSERT INTO Tag (ID, CVFile) VALUES (?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, ID);
+                pstmt.setBytes(2, fileData);
+                pstmt.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            System.out.println(e.getMessage());
+        }
 
 
-        //Delete pdf file from folder because it is in db.
-        filePDF.delete();
+        //--------------------------------------Get from Database--------------------------------------------
 
-        //Almost completed, I'll check back when the other parts are progressing.
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:Tag.db")) {
+            // Retrieve the PDF file from the database
+            String sql = "SELECT CVFile FROM Tag WHERE ID = ?";
+            try (Statement stmt = conn.createStatement();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, ID);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    byte[] fileData = rs.getBytes("CVFile");
+
+                    // Write the PDF file to the file system
+                    Path filePath = Paths.get("test_retrieved.pdf");
+                    Files.write(filePath, fileData);
+                }
+            }
+        } catch (SQLException | IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //--------------------------------------Delete first created PDF-----------------------------------------
+        File file = new File("CVDocument.pdf");
+        file.delete();
 
     }
     public static void searchCV(){}
@@ -296,18 +327,6 @@ public class CV {
     }*/
 
     public static void printCV(File file){
-
-        //For print, I thought that the file should be opened with the default
-        // program on the computer and print processing could be done through
-        // the opened program.
-
-        try {
-            Desktop.getDesktop().open(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Almost completed, I'll check back when the other parts are progressing.
-
+        //TODO
     }
 }
