@@ -1,4 +1,6 @@
 import com.itextpdf.html2pdf.HtmlConverter;
+
+import javax.swing.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,10 +12,48 @@ import java.util.Scanner;
 public class CV {
 
 
-    public static void addCV(File file, String name, String surname, String Education, String[] Languages, String[] Experiences,
-                             String[] Projects, String Department, String Address, int ID, String[] Competencies,
-                             String[] Certificates, Long PhoneNumber, Date LocalDate, String About){
+    public static void addCV(){
+
+        // prompt the user to select a PDF file
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select a PDF file");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            // get the selected PDF file
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+
+            // establish a connection to the database
+            Connection conn = null;
+            try {
+                String url = "jdbc:sqlite:Tag.db";
+                conn = DriverManager.getConnection(url);
+
+                // insert the PDF file into the database
+                String sql = "INSERT INTO Tag (CVFile) VALUES (?)";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+
+                InputStream is = new FileInputStream(filePath);
+                pstmt.setBinaryStream(1, is);
+                pstmt.executeUpdate();
+                pstmt.close();
+
+                JOptionPane.showMessageDialog(null, "PDF file added to database successfully!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            } finally {
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+        }
     }
+    
     public static void openCV(){}
     public static void generateCV(int ID, String name, String surname, String Education, String[] Languages, String[] Experiences,
                                   String[] Projects, String Department, String Address, String[] Competencies,
