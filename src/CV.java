@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Date;
+import java.util.Scanner;
+
 public class CV {
 
 
@@ -248,108 +250,88 @@ public class CV {
         }
     }
 
-    /*public static void updateCV(String name, String surname, String education, String[] languages, String[] experiences, String[] projects,
+    public static void updateCV(String name, String surname, String education, String[] languages, String[] experiences, String[] projects,
                                 String department, String address, int ID, String[] competencies, String[] certificates,
-                                Long phoneNumber, Date localDate, String about){
-        //TODO burda yeni tag objeleri oluşturmuşsun ki sanırım yanlış anlaşılmayı anladım.
-            adı üstünde tag eklemek demek herhangi bir türde bir şey ekleyebilirsin demek fakat bizim dizayn da tag
-            isimden başlayıp numarasına kadar olan bilgiyi tek bir objede (Tag) toplamak demek
-            kodunda değiştirmen gereken tek şey toplu tag objelerini silip onun yerine; databasemizden seçilen CV için
-            eski ve yeni tag objelerini gelen parametreyle karşılaştırmak ve fark varsa onu yeniye güncellemek olmalı
-        //
-     */
-        /*Connection conn = null;
-        Statement stmt = conn.createStatement();
+                                Long phoneNumber, Date localDate, String about)throws SQLException{
 
-        String sql = "UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition";
-        stmt.executeUpdate(sql); '//'
+        Connection connect = null;
+        PreparedStatement state = null;
+        Scanner scanner=new Scanner(System.in);
+        try {
+            // Connecting to the database
+            connect = DriverManager.getConnection("jdbc:sqlite:Tag.db");
 
-        Scanner scan = new Scanner(System.in);
-        //name
-        name = scan.next();
-        Tag nam = new Tag();
-        nam.setName(name);
-        //surname
-        surname = scan.next();
-        Tag surName = new Tag();
-        surName.setSurname(surname);
-        //education
-        education = scan.next();
-        Tag edu = new Tag();
-        edu.setEducation(education);
-        //languages
-        String a = scan.nextLine();
-        languages = a.split(" ");  // split the input string into an array of strings
-        int[] newLan = new int[languages.length];  // create a new array with the same length as the input
-        for (int i = 0; i < languages.length; i++) {
-            newLan[i] = Integer.parseInt(languages[i]);  // parse each element of the input array and add it to the new array
-        }
-        Tag lan = new Tag();
-        lan.setLanguages(languages);// update the myArray field with the new array
-        //experiences
-        String b = scan.nextLine();
-        experiences = b.split(" ");
-        int[] newEXp = new int[experiences.length];
-        for (int i = 0; i < experiences.length; i++) {
-            newEXp[i] = Integer.parseInt(experiences[i]);
-        }
-        Tag exp = new Tag();
-        exp.setExperiences(experiences);
-        //projects
-        String c = scan.nextLine();
-        projects = c.split(" ");
-        int[] newPro = new int[projects.length];
-        for (int i = 0; i < projects.length; i++) {
-            newPro[i] = Integer.parseInt(projects[i]);
-        }
-        Tag proj = new Tag();
-        proj.setProjects(projects);
-        //department
-        department = scan.next();
-        Tag dep = new Tag();
-        dep.setDepartment(department);
-        //address
-        address = scan.next();
-        Tag addr = new Tag();
-        addr.setAddress(address);
-        //ID
-        ID = scan.nextInt();
-        Tag id = new Tag();
-        id.setID(ID);
-        //competencies
-        String d = scan.nextLine();
-        competencies = d.split(" ");
-        int[] newCom = new int[competencies.length];
-        for (int i = 0; i < competencies.length; i++) {
-            newCom[i] = Integer.parseInt(competencies[i]);
-        }
-        Tag comp = new Tag();
-        comp.setCompetencies(competencies);
-        //certificates
-        String e = scan.nextLine();
-        certificates = e.split(" ");
-        int[] newCer = new int[certificates.length];
-        for (int i = 0; i < certificates.length; i++) {
-            newCer[i] = Integer.parseInt(certificates[i]);
-        }
-        Tag cert = new Tag();
-        cert.setCertificates(certificates);
-        //phoneNumber
-        phoneNumber = scan.nextLong();
-        Tag ph = new Tag();
-        ph.setPhoneNumber(phoneNumber);
-        //date
-        /*Tag dt = new Tag();
-        Date date = new Date();  // creates a new Date object with the current date and time
-        dt.setDate(date);???
-        //about
-        about = scan.next();
-        Tag abt = new Tag();
-        abt.setAbout(about);
+            // First of all get new inputs from the user
+            System.out.println("Name: ");
+            String newName= scanner.next();
+            System.out.println("Surname: ");
+            String newSurname= scanner.next();
+            System.out.println("Education: ");
+            String newEdu= scanner.next();
+            System.out.println("Languages: ");
+            String newLang= scanner.next();
+            System.out.println("Experiences: ");
+            String newExp= scanner.next();
+            System.out.println("Projects: ");
+            String newPrj= scanner.next();
+            System.out.println("Department: ");
+            String newDept= scanner.next();
+            System.out.println("Address: ");
+            String newAddr= scanner.next();
+            System.out.println("ID: ");
+            int newID= scanner.nextInt();
+            System.out.println("Competencies: ");
+            String newComp= scanner.next();
+            System.out.println("Certificates: ");
+            String newCert= scanner.next();
+            System.out.println("Phone Number: ");
+            int newphone= scanner.nextInt();
+            System.out.println("Date: ");
+            int newDate= scanner.nextInt();
+            System.out.println("About: ");
+            String newabt= scanner.nextLine();
 
-    }*/
+            //Update the variables
+            state = connect.prepareStatement("UPDATE TAG set Name = ?, Surname=?, Education=?, Languages=?, " +
+                    "Experiences=?, Projects=?, Department=?, Address=?, ID=?, Competencies=?, Certificates=?," +
+                    "PhoneNumber=?, Date=?, About=?  where ID=1;");
+
+
+            state.setString(1,newName);
+            state.setString(2,newSurname);
+            state.setString(3,newEdu);
+            state.setString(4,newLang);
+            state.setString(5,newExp);
+            state.setString(6,newPrj);
+            state.setString(7,newDept);
+            state.setString(8,newAddr);
+            state.setInt(9,newID);
+            state.setString(10,newComp);
+            state.setString(11,newCert);
+            state.setInt(12,newphone);
+            state.setInt(13,newDate);
+            state.setString(14,newabt);
+
+            state.executeUpdate();
+            connect.commit();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            // Close the connection and statement
+            if (state != null) {
+                state.close();
+            }
+            if (connect != null) {
+                connect.close();
+            }
+        }
+
+    }
 
     public static void printCV(File file){
         //TODO
     }
+
 }
