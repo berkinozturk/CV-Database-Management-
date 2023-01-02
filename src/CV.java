@@ -223,7 +223,30 @@ public class CV {
 
     }
     public static void searchCV(){}
-    public static void deleteCV(){}
+    public static void deleteCV(String blob) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection("jdbc:sqlite:Tag.db");
+
+            // Delete the entry from the CV table
+            String sql = "DELETE FROM CV WHERE CV = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, blob);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // Close the connection and statement
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
 
     /*public static void updateCV(String name, String surname, String education, String[] languages, String[] experiences, String[] projects,
                                 String department, String address, int ID, String[] competencies, String[] certificates,
