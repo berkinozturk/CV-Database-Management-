@@ -64,11 +64,12 @@ public class OpenCVScreen extends JFrame {
         About.setText(about);
 
         printCVFileButton.addActionListener(event -> {
-            CV.printCV(id); //TODO PARAMETRE
+            CV.printCV(id);
         });
         deleteCVButton.addActionListener(event -> {
             try {
-                CV.deleteCV(id); //TODO PARAMETRE
+                CV.deleteCV(id);
+                this.setVisible(false);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -77,5 +78,5 @@ public class OpenCVScreen extends JFrame {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-    }
+}
 }

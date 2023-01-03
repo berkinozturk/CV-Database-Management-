@@ -16,65 +16,54 @@ public class CV {
 
     public static void addCV(String Name, String Surname, String Education, String[] Languages, String[] Experiences,
                              String[] Projects, String Department, String Address, String[] Competencies,
-                             String[] Certificates, Long PhoneNumber, String About){
+                             String[] Certificates, Long PhoneNumber, String About, String path){
 
-        // prompt the user to select a PDF file
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Select a PDF file");
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int result = fileChooser.showOpenDialog(null);
 
-        if (result == JFileChooser.APPROVE_OPTION) {
-            // get the selected PDF file
-            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+        // establish a connection to the database
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:Tag.db";
+            conn = DriverManager.getConnection(url);
 
-            // establish a connection to the database
-            Connection conn = null;
+            Path filePath = Paths.get(path);
+            byte[] fileData = Files.readAllBytes(filePath);
+
+            // Insert the PDF file into the database
+            String sql = "INSERT INTO Tag (Name, Surname, Education, Languages, Experiences, Projects, Department" +
+                    ",Address, Competencies, Certificates, PhoneNumber, Date, About, CVFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, " +
+                    "?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,Name);
+            pstmt.setString(2,Surname);
+            pstmt.setString(3,Education);
+            pstmt.setString(4, Arrays.toString(Languages));
+            pstmt.setString(5, Arrays.toString(Experiences));
+            pstmt.setString(6, Arrays.toString(Projects));
+            pstmt.setString(7,Department);
+            pstmt.setString(8, Address);
+            pstmt.setString(9, Arrays.toString(Competencies));
+            pstmt.setString(10, Arrays.toString(Certificates));
+            pstmt.setDouble(11,PhoneNumber);
+            pstmt.setString(12, String.valueOf(new Date()));
+            pstmt.setString(13, About);
+            pstmt.setBytes(14, fileData);
+
+            pstmt.executeUpdate();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
             try {
-                String url = "jdbc:sqlite:Tag.db";
-                conn = DriverManager.getConnection(url);
-
-                byte[] fileData = Files.readAllBytes(Path.of(filePath));
-
-                // Insert the PDF file into the database
-                String sql = "INSERT INTO Tag (Name, Surname, Education, Languages, Experiences, Projects, Department" +
-                        ",Address, Competencies, Certificates, PhoneNumber, Date, About, CVFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, " +
-                        "?, ?, ?, ?, ?, ?)";
-
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1,Name);
-                pstmt.setString(2,Surname);
-                pstmt.setString(3,Education);
-                pstmt.setString(4, Arrays.toString(Languages));
-                pstmt.setString(5, Arrays.toString(Experiences));
-                pstmt.setString(6, Arrays.toString(Projects));
-                pstmt.setString(7,Department);
-                pstmt.setString(8, Address);
-                pstmt.setString(9, Arrays.toString(Competencies));
-                pstmt.setString(10, Arrays.toString(Certificates));
-                pstmt.setDouble(11,PhoneNumber);
-                pstmt.setString(12, String.valueOf(new Date()));
-                pstmt.setString(13, About);
-                pstmt.setBytes(14, fileData);
-
-                InputStream is = new FileInputStream(filePath);
-                pstmt.setBinaryStream(14, is);
-                pstmt.executeUpdate();
-                pstmt.close();
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            finally {
-                try {
-                    if (conn != null) {
-                        conn.close();
-                    }
-                } catch (Exception e) {
-                    // do nothing
+                if (conn != null) {
+                    conn.close();
                 }
+            } catch (Exception e) {
+                // do nothing
             }
         }
     }
@@ -127,7 +116,7 @@ public class CV {
 
 
         OpenCVScreen openCVScreen = new OpenCVScreen(id, Name, Surname, education, languages, experiences, projects, department, address, competencies
-        , certificates, phoneNumber, about);
+                , certificates, phoneNumber, about);
         openCVScreen.setVisible(true);
     }
     public static void generateCV(String name, String surname, String Education, String[] Languages, String[] Experiences,
@@ -380,37 +369,67 @@ public class CV {
         }
     }
 
-    public static void updateCV(String Name, String Surname, String Education, String[] Languages, String[] Experiences,
-                                String[] Projects, String Department, String Address, String[] Competencies, int ID,
-                                String[] Certificates, Long PhoneNumber, String About)throws SQLException{
+    public static void updateCV(String name, String surname, String education, String[] languages, String[] experiences, String[] projects,
+                                String department, String address, int ID, String[] competencies, String[] certificates,
+                                Long phoneNumber, Date localDate, String about)throws SQLException{
 
         Connection connect = null;
         PreparedStatement state = null;
-
+        Scanner scanner=new Scanner(System.in);
         try {
             // Connecting to the database
             connect = DriverManager.getConnection("jdbc:sqlite:Tag.db");
 
+            // First of all get new inputs from the user
+            System.out.println("Name: ");
+            String newName= scanner.next();
+            System.out.println("Surname: ");
+            String newSurname= scanner.next();
+            System.out.println("Education: ");
+            String newEdu= scanner.next();
+            System.out.println("Languages: ");
+            String newLang= scanner.next();
+            System.out.println("Experiences: ");
+            String newExp= scanner.next();
+            System.out.println("Projects: ");
+            String newPrj= scanner.next();
+            System.out.println("Department: ");
+            String newDept= scanner.next();
+            System.out.println("Address: ");
+            String newAddr= scanner.next();
+            System.out.println("ID: ");
+            int newID= scanner.nextInt();
+            System.out.println("Competencies: ");
+            String newComp= scanner.next();
+            System.out.println("Certificates: ");
+            String newCert= scanner.next();
+            System.out.println("Phone Number: ");
+            int newphone= scanner.nextInt();
+            System.out.println("Date: ");
+            int newDate= scanner.nextInt();
+            System.out.println("About: ");
+            String newabt= scanner.nextLine();
+
             //Update the variables
             state = connect.prepareStatement("UPDATE TAG set Name = ?, Surname=?, Education=?, Languages=?, " +
-                    "Experiences=?, Projects=?, Department=?, Address=?, Competencies=?, Certificates=?," +
-                    "PhoneNumber=?, Date=?, About=?  where ID=?");
+                    "Experiences=?, Projects=?, Department=?, Address=?, ID=?, Competencies=?, Certificates=?," +
+                    "PhoneNumber=?, Date=?, About=?  where ID=1;");
 
 
-            state.setString(1,Name);
-            state.setString(2,Surname);
-            state.setString(3,Education);
-            state.setString(4,Arrays.toString(Languages));
-            state.setString(5,Arrays.toString(Experiences));
-            state.setString(6,Arrays.toString(Projects));
-            state.setString(7,Department);
-            state.setString(8,Address);
-            state.setString(9,Arrays.toString(Competencies));
-            state.setString(10,Arrays.toString(Certificates));
-            state.setDouble(11,PhoneNumber);
-            state.setString(12,String.valueOf(new Date()));
-            state.setString(13,About);
-            state.setInt(14,ID);
+            state.setString(1,newName);
+            state.setString(2,newSurname);
+            state.setString(3,newEdu);
+            state.setString(4,newLang);
+            state.setString(5,newExp);
+            state.setString(6,newPrj);
+            state.setString(7,newDept);
+            state.setString(8,newAddr);
+            state.setInt(9,newID);
+            state.setString(10,newComp);
+            state.setString(11,newCert);
+            state.setInt(12,newphone);
+            state.setInt(13,newDate);
+            state.setString(14,newabt);
 
             state.executeUpdate();
             connect.commit();
@@ -429,7 +448,6 @@ public class CV {
         }
 
     }
-
 
     public static void printCV(int ID){
 
@@ -465,7 +483,6 @@ public class CV {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }
-    }
+  }}
 
 }
