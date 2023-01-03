@@ -1,11 +1,13 @@
 import com.itextpdf.html2pdf.HtmlConverter;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -99,13 +101,13 @@ public class CV {
         }
 
 
-        OpenCVScreen openCVScreen = new OpenCVScreen(Name, Surname, education, languages, experiences, projects, department, address, competencies
-                ,certificates,phoneNumber,about);
+        OpenCVScreen openCVScreen = new OpenCVScreen(id, Name, Surname, education, languages, experiences, projects, department, address, competencies
+        ,certificates,phoneNumber,about);
         openCVScreen.setVisible(true);
     }
-    public static void generateCV(int ID, String name, String surname, String Education, String[] Languages, String[] Experiences,
+    public static void generateCV(String name, String surname, String Education, String[] Languages, String[] Experiences,
                                   String[] Projects, String Department, String Address, String[] Competencies,
-                                  String[] Certificates, Long PhoneNumber, String About) throws SQLException {
+                                  String[] Certificates, Long PhoneNumber, String About) {
 
         //These prevent getting an error when no value is entered.
         String Name = "not defined";
@@ -127,30 +129,40 @@ public class CV {
         //Get values if they defined.
         if (name != null){
             Name = name;
-        } else if (surname != null) {
+        }
+        if (surname != null) {
             Surname = surname;
-        } else if (Address != null) {
+        }
+        if (Address != null) {
             address = Address;
-        } else if (Education != null) {
+        }
+        if (Education != null) {
             education = Education;
-        } else if (Languages != null) {
+        }
+        if (Languages != null) {
             languages = Languages;
-        } else if (Experiences != null) {
+        }
+        if (Experiences != null) {
             experiences = Experiences;
-        } else if (Projects != null) {
+        }
+        if (Projects != null) {
             projects = Projects;
-        } else if (Department != null) {
+        }
+        if (Department != null) {
             department = Department;
-        } else if (Competencies != null) {
+        }
+        if (Competencies != null) {
             competencies = Competencies;
-        } else if (Certificates != null) {
+        }
+        if (Certificates != null) {
             certificates = Certificates;
-        } else if (PhoneNumber != null) {
+        }
+        if (PhoneNumber != null) {
             phoneNumber = PhoneNumber;
         }
         //else if (LocalDate != null) {
         //    date = LocalDate;}
-        else if (About != null) {
+        if (About != null) {
             about = About;
         }
 
@@ -263,9 +275,14 @@ public class CV {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            htmlFile.delete();
         }
-
-        htmlFile.delete();
 
         //-------------------------------------Send to Database---------------------------------------------
 
@@ -275,19 +292,41 @@ public class CV {
             byte[] fileData = Files.readAllBytes(filePath);
 
             // Insert the PDF file into the database
-            String sql = "INSERT INTO Tag (ID, CVFile) VALUES (?, ?)";
+            String sql = "INSERT INTO Tag (Name, Surname, Education, Languages, Experiences, Projects, Department" +
+                    ",Address, Competencies, Certificates, PhoneNumber, Date, About, CVFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, " +
+                    "?, ?, ?, ?, ?, ?)";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, ID);
-                pstmt.setBytes(2, fileData);
+                pstmt.setString(1,Name);
+                pstmt.setString(2,Surname);
+                pstmt.setString(3,education);
+                pstmt.setString(4, Arrays.toString(languages));
+                pstmt.setString(5, Arrays.toString(Experiences));
+                pstmt.setString(6, Arrays.toString(Projects));
+                pstmt.setString(7,department);
+                pstmt.setString(8, address);
+                pstmt.setString(9, Arrays.toString(competencies));
+                pstmt.setString(10, Arrays.toString(Certificates));
+                pstmt.setDouble(11,phoneNumber);
+                pstmt.setString(12, String.valueOf(new Date()));
+                pstmt.setString(13, about);
+                pstmt.setBytes(14, fileData);
                 pstmt.executeUpdate();
             }
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
         }
+        finally {
+            //--------------------------------------Delete first created PDF-----------------------------------------
+            File file = new File("CVDocument.pdf");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            file.delete();
+        }
 
-        //--------------------------------------Delete first created PDF-----------------------------------------
-        File file = new File("CVDocument.pdf");
-        file.delete();
+
 
     }
     public static void searchCV(){}
@@ -400,6 +439,7 @@ public class CV {
 
         //--------------------------------------Get from Database--------------------------------------------
 
+        File file = null;
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:Tag.db")) {
             // Retrieve the PDF file from the database
             String sql = "SELECT CVFile FROM Tag WHERE ID = ?";
@@ -413,10 +453,22 @@ public class CV {
                     // Write the PDF file to the file system
                     Path filePath = Paths.get("test_retrieved.pdf");
                     Files.write(filePath, fileData);
+
+                    //open the file
+                    file = new File("test_retrieved.pdf");
+                    Desktop.getDesktop().open(file);
                 }
             }
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                Thread.sleep(1000);
+                file.delete();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

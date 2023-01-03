@@ -75,7 +75,7 @@ public class CVManagementSystem {
                     "\t\"About\"\tTEXT,\n" +
                     "\t\"CVFile\"\tBLOB,\n" +
                     "\tPRIMARY KEY(\"ID\" AUTOINCREMENT)\n" +
-                    ");";
+                ");";
 
 
             Statement stmt = conn.createStatement();
@@ -100,12 +100,13 @@ public class CVManagementSystem {
         panel.add(searchField);
         panel.add(searchButton);
 
-        TESTBUTON = new JButton("TEST OPEN CV");
+        TESTBUTON = new JButton("TEST OPEN CV id=1");
         panel.add(TESTBUTON);
 
         TESTBUTON.addActionListener(event -> {
-            CV.openCV(1);
+                CV.openCV(1);
         });
+
 
     }
 
@@ -148,3 +149,6 @@ public class CVManagementSystem {
     }
 
 }
+
+
+
