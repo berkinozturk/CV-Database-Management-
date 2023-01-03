@@ -5,6 +5,7 @@ public class OpenCVScreen extends JFrame {
     private JButton printCVFileButton;
     private JButton deleteCVButton;
     private JButton editTagsButton;
+<<<<<<< HEAD
     private JLabel Name;
     private JLabel Surname;
     private JLabel Education;
@@ -50,5 +51,12 @@ public class OpenCVScreen extends JFrame {
         PhoneNumber.setText(Long.toString(phoneNumber));
         About.setText(about);
 
+=======
+
+    public OpenCVScreen(){
+        add(panel);
+        setSize(500,500);
+        setTitle("CV Add");
+>>>>>>> e4f4f4949252bc96fba1777a80f6979df339fb30
     }
 }

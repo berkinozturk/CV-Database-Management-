@@ -100,6 +100,7 @@ public class CVManagementSystem {
         panel.add(searchField);
         panel.add(searchButton);
 
+<<<<<<< HEAD
         TESTBUTON = new JButton("TEST OPEN CV");
         panel.add(TESTBUTON);
 
@@ -108,6 +109,8 @@ public class CVManagementSystem {
         });
 
 
+=======
+>>>>>>> e4f4f4949252bc96fba1777a80f6979df339fb30
     }
 
     private void menuBar(){
