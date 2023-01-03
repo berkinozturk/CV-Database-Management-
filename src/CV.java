@@ -371,7 +371,7 @@ public class CV {
 
     public static void updateCV(String Name, String Surname, String Education, String[] Languages, String[] Experiences,
                                 String[] Projects, String Department, String Address, String[] Competencies, int ID,
-                                String[] Certificates, Long PhoneNumber, String About)throws SQLException{
+                                String[] Certificates, Long PhoneNumber, String About){
 
         Connection connect = null;
         PreparedStatement state = null;
@@ -407,10 +407,18 @@ public class CV {
 
             // Close the connection and statement
             if (state != null) {
-                state.close();
+                try {
+                    state.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
             if (connect != null) {
-                connect.close();
+                try {
+                    connect.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 

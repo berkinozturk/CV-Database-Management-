@@ -66,6 +66,11 @@ public class OpenCVScreen extends JFrame {
         printCVFileButton.addActionListener(event -> {
             CV.printCV(id);
         });
+        editTagsButton.addActionListener(event -> {
+            EditCVScreen EditCVFrame = new EditCVScreen(id);
+            EditCVFrame.setVisible(true);
+        });
+
         deleteCVButton.addActionListener(event -> {
             try {
                 CV.deleteCV(id);
