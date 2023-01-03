@@ -24,7 +24,7 @@ file and a connected database.
 #### Design Diagrams
 ### Structural Design
 
-[Structural Design](https://www.linkpicture.com/q/Screenshot_1_342.png)
+![Structural Design](https://www.linkpicture.com/q/Screenshot_1_342.png "Structural Design")
 
 - [Design Document](https://drive.google.com/file/d/1VrJThl8LS4FLN9yFBYOlqJJOEPN4BITT/view?usp=sharing)
 - [Software Requirements Specification Document](https://drive.google.com/file/d/1iWTd5pCTnebjXQLjjQ6K4um6pd0PuHNK/view?usp=sharing)
