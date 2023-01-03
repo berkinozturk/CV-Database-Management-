@@ -15,12 +15,12 @@ public class Tag {
     private String[] competencies;
     private String[] certificates;
     private long phoneNumber;
-    private LocalDate date;
+    private String date;
     private String about;
 
     public Tag(String name, String surname, String education, String[] languages, String[] experiences,
                String[] projects, String department, String address, int ID, String[] competencies,
-               String[] certificates, long phoneNumber, LocalDate date, String about) {
+               String[] certificates, long phoneNumber, String date, String about) {
         this.name = name;
         this.surname = surname;
         this.education = education;
@@ -134,11 +134,19 @@ public class Tag {
         this.phoneNumber = phoneNumber;
     }
 
-    public LocalDate getDate() {
+    public File getPdf() {
+        return pdf;
+    }
+
+    public void setPdf(File pdf) {
+        this.pdf = pdf;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

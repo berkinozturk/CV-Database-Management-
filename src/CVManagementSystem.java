@@ -1,9 +1,15 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class CVManagementSystem {
     private JFrame frame;
@@ -17,9 +23,9 @@ public class CVManagementSystem {
     private JMenuItem helpMenuItem;
     private JButton searchButton;
     private JTextField searchField;
-
-    private JButton TESTBUTON;
     private final int width = 800,height = 600;
+    private JScrollPane jScrollPane1;
+    private JTable jTable_CVs;
 
     public CVManagementSystem() {
         frame = new JFrame("CV DATABASE");
@@ -34,9 +40,8 @@ public class CVManagementSystem {
         frame.setVisible(true);
     }
     public static void main(String[] args) {
-        new CVManagementSystem();
         DBConnection();
-
+        new CVManagementSystem();
 
     }
 
@@ -91,22 +96,93 @@ public class CVManagementSystem {
         }
     }
 
+    public ArrayList<Tag> ListUsers(String ValToSearch)
+    {
+        ArrayList<Tag> cvs = new ArrayList<Tag>();
 
+        Statement st;
+        ResultSet rs;
+
+        try{
+            Connection con = DriverManager.getConnection("jdbc:sqlite:Tag.db");
+            st = con.createStatement();
+            String searchQuery = "SELECT * FROM Tag WHERE (Name || Surname || Education || Languages || Experiences || Projects || Department || Address || Competencies || Certificates || PhoneNumber || About) LIKE '%"+ValToSearch+"%'";
+            rs = st.executeQuery(searchQuery);
+
+            Tag tag;
+
+            while(rs.next())
+            {
+                tag = new Tag(rs.getString("Name"),
+                        rs.getString("Surname"),
+                        rs.getString("Education"),
+                        rs.getString("Languages").split(","),
+                        rs.getString("Experiences").split(","),
+                        rs.getString("Projects").split(","),
+                        rs.getString("Department"),
+                        rs.getString("Address"),
+                        rs.getInt("ID"),
+                        rs.getString("Competencies").split(","),
+                        rs.getString("Certificates").split(","),
+                        rs.getLong("PhoneNumber"),
+                        rs.getString("Date"),
+                        rs.getString("About"));
+
+                cvs.add(tag);
+            }
+
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
+        return cvs;
+    }
     private void addPanel(){
         panel = new JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable_CVs = new javax.swing.JTable();
         searchButton();
         searchField = new JTextField();
         searchField.setColumns(30);
         panel.add(searchField);
         panel.add(searchButton);
+        panel.add(jScrollPane1);
+        panel.add(jTable_CVs);
 
-        TESTBUTON = new JButton("TEST OPEN CV id=1");
-        panel.add(TESTBUTON);
+        searchButton.addActionListener(event -> {
 
-        TESTBUTON.addActionListener(event -> {
-                CV.openCV(1);
+            ArrayList<Tag> CVs = ListUsers(searchField.getText());
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(new Object[]{"ID","Name","Surname","PhoneNumber"});
+            Object[] row = new Object[4];
+
+            for(int i = 0; i < CVs.size(); i++)
+            {
+                row[0] = CVs.get(i).getID();
+                row[1] = CVs.get(i).getName();
+                row[2] = CVs.get(i).getSurname();
+                row[3] = CVs.get(i).getPhoneNumber();
+                model.addRow(row);
+            }
+            jTable_CVs.setModel(model);
+
         });
 
+
+        jTable_CVs.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {},
+                new String [] {
+                        "ID","Name","Surname","PhoneNumber"
+                }
+        ));
+
+        jScrollPane1.setViewportView(jTable_CVs);
+
+        jTable_CVs.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                CV.openCV((Integer) jTable_CVs.getValueAt(jTable_CVs.getSelectedRow(),0));
+            }
+        });
 
     }
 
