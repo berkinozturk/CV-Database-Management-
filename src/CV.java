@@ -237,28 +237,6 @@ public class CV {
             System.out.println(e.getMessage());
         }
 
-
-        //--------------------------------------Get from Database--------------------------------------------
-
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:Tag.db")) {
-            // Retrieve the PDF file from the database
-            String sql = "SELECT CVFile FROM Tag WHERE ID = ?";
-            try (Statement stmt = conn.createStatement();
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, ID);
-                ResultSet rs = pstmt.executeQuery();
-                if (rs.next()) {
-                    byte[] fileData = rs.getBytes("CVFile");
-
-                    // Write the PDF file to the file system
-                    Path filePath = Paths.get("test_retrieved.pdf");
-                    Files.write(filePath, fileData);
-                }
-            }
-        } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
-        }
-
         //--------------------------------------Delete first created PDF-----------------------------------------
         File file = new File("CVDocument.pdf");
         file.delete();
@@ -370,8 +348,28 @@ public class CV {
 
     }
 
-    public static void printCV(File file){
-        //TODO
+    public static void printCV(int ID){
+
+        //--------------------------------------Get from Database--------------------------------------------
+
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:Tag.db")) {
+            // Retrieve the PDF file from the database
+            String sql = "SELECT CVFile FROM Tag WHERE ID = ?";
+            try (Statement stmt = conn.createStatement();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, ID);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    byte[] fileData = rs.getBytes("CVFile");
+
+                    // Write the PDF file to the file system
+                    Path filePath = Paths.get("test_retrieved.pdf");
+                    Files.write(filePath, fileData);
+                }
+            }
+        } catch (SQLException | IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

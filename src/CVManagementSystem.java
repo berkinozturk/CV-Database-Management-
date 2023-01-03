@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -9,7 +11,7 @@ public class CVManagementSystem {
     private JMenuBar menuBar;
     private JMenu toolsMenu;
     private JMenu helpMenu;
-    private JMenuItem importItem;
+    private JMenuItem addItem;
     private JMenuItem printItem;
     private JMenuItem generateItem;
     private JMenuItem helpMenuItem;
@@ -31,8 +33,6 @@ public class CVManagementSystem {
     }
     public static void main(String[] args) {
         new CVManagementSystem();
-        CV cv = new CV();
-        CV cv2 = new CV();
         DBConnection();
 
 
@@ -57,8 +57,8 @@ public class CVManagementSystem {
 
             // Create the Tag & CV tables
             String sql =  "CREATE TABLE \"Tag\" (\n" +
-                    "\t\"Name\"\tTEXT NOT NULL,\n" +
-                    "\t\"Surname\"\tTEXT NOT NULL,\n" +
+                    "\t\"Name\"\tTEXT ,\n" +
+                    "\t\"Surname\"\tTEXT ,\n" +
                     "\t\"Education\"\tTEXT,\n" +
                     "\t\"Languages\"\tTEXT,\n" +
                     "\t\"Experiences\"\tTEXT,\n" +
@@ -71,11 +71,10 @@ public class CVManagementSystem {
                     "\t\"PhoneNumber\"\tREAL UNIQUE,\n" +
                     "\t\"Date\"\tTEXT,\n" +
                     "\t\"About\"\tTEXT,\n" +
+                    "\t\"CVFile\"\tBLOB,\n" +
                     "\tPRIMARY KEY(\"ID\" AUTOINCREMENT)\n" +
-                    "); " +
-                    "CREATE TABLE \"CV\" (\n" +
-                    "\t\"CV\"\tBLOB\n" +
-                    ")";
+                ");";
+
 
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
@@ -99,34 +98,47 @@ public class CVManagementSystem {
         panel.add(searchField);
         panel.add(searchButton);
 
+
+
     }
 
     private void menuBar(){
         menuBar = new JMenuBar();
         // Create the Tools and Help menu
         toolsMenu = new JMenu("Tools");
-        importItem = new JMenuItem("Import CV");
-        printItem = new JMenuItem("Print CV");
+        addItem = new JMenuItem("Add CV");
         generateItem = new JMenuItem("Generate CV");
         helpMenu = new JMenu("Help");
         helpMenuItem = new JMenuItem("Help?");
 
-        toolsMenu.add(importItem);
-        toolsMenu.add(printItem);
+        toolsMenu.add(addItem);
         toolsMenu.add(generateItem);
         helpMenu.add(helpMenuItem);
 
         menuBar.add(toolsMenu);
         menuBar.add(helpMenu);
+
+        addItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AddCV addCVFrame = new AddCV();
+                addCVFrame.setVisible(true);
+            }
+        });
+        generateItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GenerateCV generateCVFrame = new GenerateCV();
+                generateCVFrame.setVisible(true);
+            }
+        });
+
     }
     private void searchButton(){
 
-        Icon searchIcon = new ImageIcon("res/search-icon.png");
+        Icon searchIcon = new ImageIcon("image/search-icon.png");
         searchButton = new JButton(searchIcon);
         searchButton.setVerticalTextPosition(AbstractButton.CENTER);
         searchButton.setHorizontalTextPosition(AbstractButton.RIGHT);
     }
-
 
 }
 
