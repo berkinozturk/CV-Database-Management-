@@ -29,22 +29,34 @@ public class OpenCVScreen extends JFrame {
         Surname.setText(surname);
         Education.setText(education);
 
+
         String languagesString = String.join(", ", languages);
+        languagesString = languagesString.substring(1);
+        languagesString = languagesString.substring(0, languagesString.length() - 1);
         Languages.setText(languagesString);
 
+
         String experiencesString = String.join(", ", experiences);
+        experiencesString = experiencesString.substring(1);
+        experiencesString = experiencesString.substring(0, experiencesString.length() - 1);
         Experiences.setText(experiencesString);
 
         String projectsString = String.join(", ", projects);
+        projectsString = projectsString.substring(1);
+        projectsString = projectsString.substring(0, projectsString.length() - 1);
         Projects.setText(projectsString);
 
         Department.setText(department);
         Address.setText(address);
 
         String competenciesString = String.join(", ", competencies);
+        competenciesString = competenciesString.substring(1);
+        competenciesString = competenciesString.substring(0, competenciesString.length() - 1);
         Competencies.setText(competenciesString);
 
         String certificatesString = String.join(", ", certificates);
+        certificatesString = certificatesString.substring(1);
+        certificatesString = certificatesString.substring(0, certificatesString.length() - 1);
         Certificates.setText(certificatesString);
 
         PhoneNumber.setText(Long.toString(phoneNumber));
@@ -53,5 +65,9 @@ public class OpenCVScreen extends JFrame {
         printCVFileButton.addActionListener(event -> {
             CV.printCV(id); //TODO PARAMETRE
         });
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

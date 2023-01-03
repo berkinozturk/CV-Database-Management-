@@ -85,13 +85,13 @@ public class CV {
                 Name = rs.getString("Name");
                 Surname = rs.getString("Surname");
                 education = rs.getString("Education");
-                //languages = rs.getString("Languages").split(",");
-                //experiences = rs.getString("Experiences").split(",");
-                //projects = rs.getString("Projects").split(",");
+                languages = rs.getString("Languages").split(",");
+                experiences = rs.getString("Experiences").split(",");
+                projects = rs.getString("Projects").split(",");
                 department = rs.getString("Department");
                 address = rs.getString("Address");
-                //competencies = rs.getString("Competencies").split(",");
-                //certificates = rs.getString("Certificates").split(",");
+                competencies = rs.getString("Competencies").split(",");
+                certificates = rs.getString("Certificates").split(",");
                 phoneNumber = rs.getLong("PhoneNumber");
                 about = rs.getString("About");
             }
@@ -99,10 +99,12 @@ public class CV {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println(languages[0]);
+
 
 
         OpenCVScreen openCVScreen = new OpenCVScreen(id, Name, Surname, education, languages, experiences, projects, department, address, competencies
-        ,certificates,phoneNumber,about);
+        , certificates, phoneNumber, about);
         openCVScreen.setVisible(true);
     }
     public static void generateCV(String name, String surname, String Education, String[] Languages, String[] Experiences,
