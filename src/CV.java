@@ -14,7 +14,9 @@ import java.util.Scanner;
 public class CV {
 
 
-    public static void addCV(){
+    public static void addCV(String Name, String Surname, String Education, String[] Languages, String[] Experiences,
+                             String[] Projects, String Department, String Address, String[] Competencies,
+                             String[] Certificates, Long PhoneNumber, String About){
 
         // prompt the user to select a PDF file
         JFileChooser fileChooser = new JFileChooser();
@@ -32,19 +34,40 @@ public class CV {
                 String url = "jdbc:sqlite:Tag.db";
                 conn = DriverManager.getConnection(url);
 
-                // insert the PDF file into the database
-                String sql = "INSERT INTO Tag (CVFile) VALUES (?)";
+                byte[] fileData = Files.readAllBytes(Path.of(filePath));
+
+                // Insert the PDF file into the database
+                String sql = "INSERT INTO Tag (Name, Surname, Education, Languages, Experiences, Projects, Department" +
+                        ",Address, Competencies, Certificates, PhoneNumber, Date, About, CVFile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, " +
+                        "?, ?, ?, ?, ?, ?)";
+
                 PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1,Name);
+                pstmt.setString(2,Surname);
+                pstmt.setString(3,Education);
+                pstmt.setString(4, Arrays.toString(Languages));
+                pstmt.setString(5, Arrays.toString(Experiences));
+                pstmt.setString(6, Arrays.toString(Projects));
+                pstmt.setString(7,Department);
+                pstmt.setString(8, Address);
+                pstmt.setString(9, Arrays.toString(Competencies));
+                pstmt.setString(10, Arrays.toString(Certificates));
+                pstmt.setDouble(11,PhoneNumber);
+                pstmt.setString(12, String.valueOf(new Date()));
+                pstmt.setString(13, About);
+                pstmt.setBytes(14, fileData);
 
                 InputStream is = new FileInputStream(filePath);
-                pstmt.setBinaryStream(1, is);
+                pstmt.setBinaryStream(14, is);
                 pstmt.executeUpdate();
                 pstmt.close();
 
-                JOptionPane.showMessageDialog(null, "PDF file added to database successfully!");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-            } finally {
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            finally {
                 try {
                     if (conn != null) {
                         conn.close();
