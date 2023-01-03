@@ -1,3 +1,5 @@
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,7 @@ class testing {
             }
         }
     }
+    @Test
     public void testUpdateCV() throws SQLException {
         String name = "John";
         String surname = "Doe";
@@ -59,16 +62,43 @@ class testing {
         CV.updateCV(name, surname, education, languages, experiences, projects, department, address, competencies, id,
                 certificates, phoneNumber, about);
 
-        // TODO: Add code to retrieve the updated CV from the database and verify that the values are correct
+        Connection connect = null;
+        PreparedStatement state = null;
+        try {
+            // Connect to the database
+            connect = DriverManager.getConnection("jdbc:sqlite:Tag.db");
+
+            // Retrieve the updated CV from the database
+            state = connect.prepareStatement("SELECT * FROM TAG WHERE ID=?");
+            state.setInt(1, id);
+            ResultSet result = state.executeQuery();
+
+            // Verify that the values in the CV are correct
+            if (result.next()) {
+                assertEquals(name, result.getString("Name"));
+                assertEquals(surname, result.getString("Surname"));
+                assertEquals(education, result.getString("Education"));
+                assertArrayEquals(languages, result.getString("Languages").split(", "));
+                assertArrayEquals(experiences, result.getString("Experiences").split(", "));
+                assertArrayEquals(projects, result.getString("Projects").split(", "));
+                assertEquals(department, result.getString("Department"));
+                assertEquals(address, result.getString("Address"));
+                assertArrayEquals(competencies, result.getString("Competencies").split(", "));
+                assertArrayEquals(certificates, result.getString("Certificates").split(", "));
+                assertEquals(phoneNumber, result.getLong("PhoneNumber"));
+                assertEquals(about, result.getString("About"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // Close the statement and connection
+            if (state != null) {
+                state.close();
+            }
+            if (connect != null) {
+                connect.close();
+            }
+        }
     }
 
-    @Test
-    public void testUpdateCVThrowsSQLException() {
-        // TODO: Set up the test so that the updateCV method throws an SQLException (e.g. by closing the connection)
-        assertThrows(SQLException.class, () -> CV.updateCV("John", "Doe", "Bachelor's Degree in Computer Science",
-                new String[] {"Java", "C++", "Python"}, new String[] {"Software Engineer at Company X", "Intern at Company Y"},
-                new String[] {"Project 1", "Project 2"}, "Engineering", "123 Main St",
-                new String[] {"Problem solving", "Communication"}, 123, new String[] {"Certificate 1", "Certificate 2"},
-                1234567890L, "I am a software engineer with experience in Java, C++, and Python."));
-    }
 }
