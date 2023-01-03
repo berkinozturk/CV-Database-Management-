@@ -1,4 +1,4 @@
-### CV Generator
+# CV Generator
 
 
 ![alt text][logo]
@@ -11,15 +11,20 @@ The CV Generator desktop application allows you to store many CVs in the applica
 
 #### Announcements / Notes
 
-- CV Generator is currently compatible to be compiled only with x64 architecture on Windows. If you would like to use it on different architectures & platforms, you need to compile the vendors for your target architecture and platform include them manually.
+- The CV Management Application will be able to work on Windows 10 computers with java installed. It will not require any add-ons to download. It will include a setup
+file and a connected database.
 
-- CV Generator is currently in active development so it's not stable on all platforms. It's being developed in Visual Studio 2019 in Windows 10 with x64 architecture, so that's the best setup to contribute to the project for now. 
+- CV Generator is currently in active development so it's not stable on all platforms. It's being developed in Intellij Idea in Windows 10, so that's the best setup to contribute to the project for now. 
 
-
+#### License
+[Check out Licence file.](https://github.com/berkinozturk/SE302_Team-2/blob/main/LICENSE.md)
 #### External Dependencies
 #### Installation
 
 #### Design Diagrams
+### Structural Design
 
-[Design Document](https://drive.google.com/file/d/1VrJThl8LS4FLN9yFBYOlqJJOEPN4BITT/view?usp=sharing)
-[Software Requirements Specification Document](https://drive.google.com/file/d/1iWTd5pCTnebjXQLjjQ6K4um6pd0PuHNK/view?usp=sharing)
+[Structural Design](https://www.linkpicture.com/q/Screenshot_1_342.png)
+
+- [Design Document](https://drive.google.com/file/d/1VrJThl8LS4FLN9yFBYOlqJJOEPN4BITT/view?usp=sharing)
+- [Software Requirements Specification Document](https://drive.google.com/file/d/1iWTd5pCTnebjXQLjjQ6K4um6pd0PuHNK/view?usp=sharing)
