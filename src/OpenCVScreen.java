@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class OpenCVScreen extends JFrame {
     private JPanel panel;
@@ -64,6 +65,13 @@ public class OpenCVScreen extends JFrame {
 
         printCVFileButton.addActionListener(event -> {
             CV.printCV(id); //TODO PARAMETRE
+        });
+        deleteCVButton.addActionListener(event -> {
+            try {
+                CV.deleteCV(id); //TODO PARAMETRE
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

@@ -355,7 +355,7 @@ public class CV {
 
     }
     public static void searchCV(){}
-    public static void deleteCV(String blob) throws SQLException {
+    public static void deleteCV(int ID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -363,9 +363,9 @@ public class CV {
             conn = DriverManager.getConnection("jdbc:sqlite:Tag.db");
 
             // Delete the entry from the CV table
-            String sql = "DELETE FROM CV WHERE CV = ?";
+            String sql = "DELETE FROM Tag WHERE Id = ?";
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, blob);
+            stmt.setInt(1, ID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
