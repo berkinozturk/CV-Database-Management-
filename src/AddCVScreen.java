@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddCV extends JFrame {
+public class AddCVScreen extends JFrame {
     private JTextField textField1;
     private JTextField textField2;
     private JTextField textField3;
@@ -19,7 +19,7 @@ public class AddCV extends JFrame {
     private JPanel panel;
     private JButton chooseCVFileButton;
 
-    public AddCV(){
+    public AddCVScreen(){
         add(panel);
         setSize(500,500);
         setTitle("CV Add");

@@ -98,8 +98,6 @@ public class CVManagementSystem {
         panel.add(searchField);
         panel.add(searchButton);
 
-
-
     }
 
     private void menuBar(){
@@ -120,13 +118,13 @@ public class CVManagementSystem {
 
         addItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddCV addCVFrame = new AddCV();
+                AddCVScreen addCVFrame = new AddCVScreen();
                 addCVFrame.setVisible(true);
             }
         });
         generateItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GenerateCV generateCVFrame = new GenerateCV();
+                GenerateCVScreen generateCVFrame = new GenerateCVScreen();
                 generateCVFrame.setVisible(true);
             }
         });

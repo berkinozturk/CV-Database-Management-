@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class GenerateCV extends JFrame {
+public class GenerateCVScreen extends JFrame {
     private JTextField textField1;
     private JTextField textField2;
     private JTextField textField3;
@@ -16,7 +16,7 @@ public class GenerateCV extends JFrame {
     private JButton addCVToDatabaseButton;
     private JPanel panel;
 
-    public GenerateCV(){
+    public GenerateCVScreen(){
         add(panel);
         setSize(500,500);
         setTitle("CV Generate");
