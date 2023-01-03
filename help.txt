@@ -1,7 +1,8 @@
 ----------------------------------------DO YOU NEED HELP?------------------------------------------------
 
 
-  The CV Generator desktop application allows you to store many CVs in the application, write information about the CV owner, and easily collect the information contained in the system about the CV owner you want.
+  The CV Generator desktop application allows you to store many CVs in the application, write information about the CV owner,
+   and easily collect the information contained in the system about the CV owner you want.
 In this user guide, you can get help with the following questions;
  -Adding a CV to the System
  -Updating the Information that You Already Added
@@ -15,7 +16,8 @@ In this user guide, you can get help with the following questions;
 
   Press the "Add CV" button in the "Tools" section on the screen to add a new CV to the "CV Generator" application.
 After filling the information you would like to enter into the system about the owner of the document, import the
-desired document by chosing "Choose CV File" button that appears on the screen. After that step, you should choose the "Add CV to Database" button.
+desired document by chosing "Choose CV File" button that appears on the screen.
+ After that step, you should choose the "Add CV to Database" button.
 
 2. UPDATE A CV
 

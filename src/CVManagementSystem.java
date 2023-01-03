@@ -1,13 +1,15 @@
+import com.itextpdf.layout.properties.VerticalAlignment;
+
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -61,6 +63,7 @@ public class CVManagementSystem {
             // Connect to the database
             String url = "jdbc:sqlite:Tag.db";
             Connection conn = DriverManager.getConnection(url);
+
 
             // Create the Tag & CV tables
             String sql =  "CREATE TABLE \"Tag\" (\n" +
@@ -214,14 +217,61 @@ public class CVManagementSystem {
                 generateCVFrame.setVisible(true);
             }
         });
+        Help();
 
     }
     private void searchButton(){
-
         Icon searchIcon = new ImageIcon("image/search-icon.png");
         searchButton = new JButton(searchIcon);
         searchButton.setVerticalTextPosition(AbstractButton.CENTER);
         searchButton.setHorizontalTextPosition(AbstractButton.RIGHT);
+    }
+    private void Help(){
+        helpMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("Help?");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(1000, 600);
+                JPanel panel = new JPanel();
+                panel.setBorder(new TitledBorder(new EtchedBorder()));
+                JTextArea textArea = new JTextArea(30,80);
+                JScrollPane pane = new JScrollPane(textArea);
+                pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+                textArea.setEditable(false);
+                JButton button = new JButton("Move Up");
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        pane.getVerticalScrollBar().setValue(pane.getVerticalScrollBar().getMinimum());
+                    }
+                });
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                try {
+                    File file = new File("help.txt");
+                    BufferedReader br = new BufferedReader( new FileReader(file));
+                    String st;
+
+                    while ((st = br.readLine()) != null ){
+                        stringBuilder.append(st);
+                        stringBuilder.append("\n");
+                    }
+                }catch (Exception exception){
+                    exception.printStackTrace();
+                }
+                String last = stringBuilder.toString();
+
+                textArea.setText(last);
+                panel.add(pane);
+                panel.add(button);
+                frame.add(panel);
+                pane.getVerticalScrollBar().setValue(pane.getVerticalScrollBar().getMinimum());
+                frame.setVisible(true);
+            }
+        });
     }
 
 }
