@@ -17,6 +17,8 @@ public class CVManagementSystem {
     private JMenuItem helpMenuItem;
     private JButton searchButton;
     private JTextField searchField;
+
+    private JButton TESTBUTON;
     private final int width = 800,height = 600;
 
     public CVManagementSystem() {
@@ -73,7 +75,7 @@ public class CVManagementSystem {
                     "\t\"About\"\tTEXT,\n" +
                     "\t\"CVFile\"\tBLOB,\n" +
                     "\tPRIMARY KEY(\"ID\" AUTOINCREMENT)\n" +
-                ");";
+                    ");";
 
 
             Statement stmt = conn.createStatement();
@@ -98,6 +100,12 @@ public class CVManagementSystem {
         panel.add(searchField);
         panel.add(searchButton);
 
+        TESTBUTON = new JButton("TEST OPEN CV");
+        panel.add(TESTBUTON);
+
+        TESTBUTON.addActionListener(event -> {
+            CV.openCV(1);
+        });
 
 
     }
@@ -120,13 +128,13 @@ public class CVManagementSystem {
 
         addItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddCV addCVFrame = new AddCV();
+                AddCVScreen addCVFrame = new AddCVScreen();
                 addCVFrame.setVisible(true);
             }
         });
         generateItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GenerateCV generateCVFrame = new GenerateCV();
+                GenerateCVScreen generateCVFrame = new GenerateCVScreen();
                 generateCVFrame.setVisible(true);
             }
         });
@@ -141,6 +149,3 @@ public class CVManagementSystem {
     }
 
 }
-
-
-

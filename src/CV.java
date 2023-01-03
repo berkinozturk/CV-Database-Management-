@@ -53,8 +53,56 @@ public class CV {
             }
         }
     }
-    
-    public static void openCV(){}
+
+    public static void openCV(int id) {
+
+        String Name ="not defined";
+        String Surname ="not defined";
+        String address = "not defined";
+        String education ="not defined";
+        String[] languages = new String[]{""};
+        String[] experiences = new String[]{""};
+        String[] projects = new String[]{""};
+        String department = "not defined";
+        String[] competencies = new String[]{""};
+        String[] certificates = new String[]{""};
+        long phoneNumber = 0;
+        //LocalDate date = null;
+        String about = "not defined";
+
+
+
+        PreparedStatement stmt = null;
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:Tag.db");
+            String sql = "SELECT * FROM Tag WHERE ID = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Name = rs.getString("Name");
+                Surname = rs.getString("Surname");
+                education = rs.getString("Education");
+                //languages = rs.getString("Languages").split(",");
+                //experiences = rs.getString("Experiences").split(",");
+                //projects = rs.getString("Projects").split(",");
+                department = rs.getString("Department");
+                address = rs.getString("Address");
+                //competencies = rs.getString("Competencies").split(",");
+                //certificates = rs.getString("Certificates").split(",");
+                phoneNumber = rs.getLong("PhoneNumber");
+                about = rs.getString("About");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        OpenCVScreen openCVScreen = new OpenCVScreen(Name, Surname, education, languages, experiences, projects, department, address, competencies
+                ,certificates,phoneNumber,about);
+        openCVScreen.setVisible(true);
+    }
     public static void generateCV(int ID, String name, String surname, String Education, String[] Languages, String[] Experiences,
                                   String[] Projects, String Department, String Address, String[] Competencies,
                                   String[] Certificates, Long PhoneNumber, String About) throws SQLException {
