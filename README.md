@@ -1,7 +1,7 @@
 ### CV Generator
 
 
-![I am GitHub Readme Generator's creator](https://arturssmirnovs.github.io/github-profile-readme-generator/images/banner.png)
+
 
 The CV Generator desktop application allows you to store many CVs in the application, write information about the CV owner, and easily collect the information contained in the system about the CV owner you want.
 
