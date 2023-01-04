@@ -217,7 +217,7 @@ public class CVManagementSystem {
 
     }
     private void searchButton(){
-        Icon searchIcon = new ImageIcon("image/search-icon.png");
+        Icon searchIcon = new ImageIcon("search-icon.png");
         searchButton = new JButton(searchIcon);
         searchButton.setVerticalTextPosition(AbstractButton.CENTER);
         searchButton.setHorizontalTextPosition(AbstractButton.RIGHT);

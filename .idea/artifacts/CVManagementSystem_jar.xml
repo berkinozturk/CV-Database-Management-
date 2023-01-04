@@ -1,0 +1,29 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CVManagementSystem:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/CVManagementSystem_jar</output-path>
+    <root id="archive" name="CVManagementSystem.jar">
+      <element id="module-output" name="CVManagementSystem" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/bcpkix-jdk15on-1.70.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/bcprov-jdk15on-1.70.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/slf4j-api-1.7.36.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/styled-xml-parser-7.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/io-7.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/forms-7.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/layout-7.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/commons-7.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/bcutil-jdk15on-1.70.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/kernel-7.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/html2pdf-4.0.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jar_files/svg-7.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-4.13.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-jupiter-5.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-jupiter-api-5.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-jupiter-engine-5.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-jupiter-params-5.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-platform-commons-1.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-platform-engine-1.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/sqlite-jdbc-3.40.0.0.jar" path-in-jar="/" />
+      <element id="library" level="project" name="pdfbox-app-2.0.27" />
+    </root>
+  </artifact>
+</component>
