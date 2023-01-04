@@ -1,10 +1,7 @@
-import com.itextpdf.layout.properties.VerticalAlignment;
-
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,7 +17,6 @@ public class CVManagementSystem {
     private JMenu toolsMenu;
     private JMenu helpMenu;
     private JMenuItem addItem;
-    private JMenuItem printItem;
     private JMenuItem generateItem;
     private JMenuItem helpMenuItem;
     private JButton searchButton;
@@ -74,7 +70,7 @@ public class CVManagementSystem {
                     "\t\"Experiences\"\tTEXT,\n" +
                     "\t\"Projects\"\tTEXT,\n" +
                     "\t\"Department\"\tTEXT,\n" +
-                    "\t\"Address\"\tTEXT UNIQUE,\n" +
+                    "\t\"Address\"\tTEXT,\n" +
                     "\t\"ID\"\tINTEGER,\n" +
                     "\t\"Competencies\"\tTEXT,\n" +
                     "\t\"Certificates\"\tTEXT,\n" +

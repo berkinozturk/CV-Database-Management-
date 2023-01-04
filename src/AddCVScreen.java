@@ -17,6 +17,7 @@ public class AddCVScreen extends JFrame {
     private JButton addCVToDatabaseButton;
     private JPanel panel;
     private JButton chooseCVFileButton;
+    private JLabel fileInfo;
     private String filePath;
 
 
@@ -24,6 +25,7 @@ public class AddCVScreen extends JFrame {
         add(panel);
         setSize(500,500);
         setTitle("CV Add");
+        addCVToDatabaseButton.setEnabled(false);
 
         chooseCVFileButton.addActionListener(event -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -31,13 +33,22 @@ public class AddCVScreen extends JFrame {
             int result = fileChooser.showOpenDialog(chooseCVFileButton);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                fileInfo.setText("Selected file: " + selectedFile.getName());
                 filePath = selectedFile.getAbsolutePath();
+            }
+            if (filePath != null){
+            addCVToDatabaseButton.setEnabled(true);
             }
         });
 
-
         addCVToDatabaseButton.addActionListener(event -> {
+
+            if (filePath == null)
+            {
+                addCVToDatabaseButton.setEnabled(false);
+                fileInfo.setText("You must select a file before add.");
+            }
+
             String name = Name.getText();
             String surname = Surname.getText();
             String education = Education.getText();
@@ -51,11 +62,18 @@ public class AddCVScreen extends JFrame {
             Long phoneNumber = Long.parseLong(PhoneNumber.getText());  // parse the phone number as a long
             String about = About.getText();
 
-            CV.addCV(name, surname, education, languages, experiences, projects, department, address, competencies,
-                    certificates,phoneNumber,about, filePath);
 
-            this.setVisible(false);
+            if (filePath != null){
+                CV.addCV(name, surname, education, languages, experiences, projects, department, address, competencies,
+                        certificates,phoneNumber,about, filePath);
+                this.setVisible(false);
+            }
+
+
+
       });
+
+
 
         }
 
