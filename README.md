@@ -6,6 +6,7 @@
 [logo]: https://www.linkpicture.com/q/BIYEAK.png "CV Generator"
 
 
+## What is CV Generator?
 
 The CV Generator desktop application allows you to store many CVs in the application, write information about the CV owner, and easily collect the information contained in the system about the CV owner you want.
 
