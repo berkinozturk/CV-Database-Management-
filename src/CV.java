@@ -111,9 +111,6 @@ public class CV {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(languages[0]);
-
-
 
         OpenCVScreen openCVScreen = new OpenCVScreen(id, Name, Surname, education, languages, experiences, projects, department, address, competencies
                 , certificates, phoneNumber, about);
@@ -135,9 +132,6 @@ public class CV {
         String[] competencies = new String[]{"not defined"};
         String[] certificates = new String[]{"not defined"};
         long phoneNumber = 0;
-        //TODO: This is here because of sorting algorithms maybe it can be as follow ==> CV has an Date attribute when
-        // we import CV into System I will also add its current imported date and you can get it from it ??? -YİĞİT
-        //LocalDate date = null;
         String about = "not defined";
 
         //Get values if they defined.
@@ -174,8 +168,6 @@ public class CV {
         if (PhoneNumber != null) {
             phoneNumber = PhoneNumber;
         }
-        //else if (LocalDate != null) {
-        //    date = LocalDate;}
         if (About != null) {
             about = About;
         }
@@ -192,7 +184,6 @@ public class CV {
                 "<p>Surname: ${Surname}</p>" +
                 "<p>Address: ${address}</p>" +
                 "<p>Phone Number: ${phoneNumber}</p>" +
-                "<p>Date: ${date}</p>" +
                 "<h2>Education</h2>" +
                 "<p>Education: ${education}</p>" +
                 "<h2>Languages</h2>" +
@@ -228,7 +219,6 @@ public class CV {
         template = template.replace("${address}", address);
         template = template.replace("${education}", education);
         template = template.replace("${phoneNumber}", String.valueOf(phoneNumber));
-        //template = template.replace("${date}", date.toString());
         template = template.replace("${department}", department);
         template = template.replace("${about}", about);
 
@@ -289,13 +279,6 @@ public class CV {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            htmlFile.delete();
         }
 
         //-------------------------------------Send to Database---------------------------------------------
@@ -332,15 +315,9 @@ public class CV {
         finally {
             //--------------------------------------Delete first created PDF-----------------------------------------
             File file = new File("CVDocument.pdf");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            htmlFile.delete();
             file.delete();
         }
-
-
 
     }
     public static void searchCV(){}
@@ -439,12 +416,11 @@ public class CV {
                     byte[] fileData = rs.getBytes("CVFile");
 
                     // Write the PDF file to the file system
-                    Path filePath = Paths.get("test_retrieved.pdf");
+                    Path filePath = Paths.get("CV.pdf");
                     Files.write(filePath, fileData);
 
                     //open the file
-                    file = new File("test_retrieved.pdf");
-                    Desktop.getDesktop().open(file);
+                    file = new File("CV.pdf");
                 }
             }
         } catch (SQLException | IOException e) {
@@ -452,11 +428,17 @@ public class CV {
         }
         finally {
             try {
-                Thread.sleep(1000);
-                file.delete();
-            } catch (InterruptedException e) {
+                Desktop.getDesktop().open(file);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
+            } finally {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                file.delete();
             }
-  }}
-
-}
+            }
+        }
+    }
